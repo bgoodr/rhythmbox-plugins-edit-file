@@ -7,4 +7,9 @@ Download rb-edit-file_0.2.zip from http://www.martinvogel.de/blog/index.php?/arc
 
 Extract it and check in the original source. zip file is http://www.martinvogel.de/blog/uploads/ZIP-Archive/rb-edit-file_0.2.zip
 
-git mv rb-edit-file edit-file
+Do some renaming to be compatible with what I see in other plugins:
+
+    git mv rb-edit-file edit-file
+    git mv rb-edit-file.py edit-file.py
+    git mv rb-edit-file.rb-plugin edit-file.plugin
+
