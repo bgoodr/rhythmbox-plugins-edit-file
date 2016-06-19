@@ -39,3 +39,9 @@ Get a copy of a correctly formatted plugin file:
     curl https://raw.githubusercontent.com/bgoodr/rhythmbox-plugins-sample-plugin/master/sample-python/sample-python.plugin > edit-file.plugin
 
 And update it for content.
+
+Change the code to use print and not the logging package, as otherwise -D option shows no output.
+
+Test it out:
+
+    ./install.sh; rhythmbox -D edit-file

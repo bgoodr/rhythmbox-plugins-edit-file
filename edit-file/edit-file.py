@@ -9,7 +9,6 @@
 #    Partly based on code in https://github.com/donaghhorgan/rhythmbox-plugins-open-containing-folder/blob/master/OpenContainingFolder.py
 
 from gi.repository import Gio, GObject, Gtk, Peas, RB
-import logging
 import subprocess
 
 
@@ -45,11 +44,11 @@ class EditFile(GObject.Object, Peas.Activatable):
                 dirpath = '/' if not dirpath else dirpath
                 subprocess.check_call(['xdg-open', dirpath])
         except:
-            logging.exception('Could not edit file')
+            print('edit-file plugin: Could not edit file')
 
     def do_activate(self):
         """Activate the plugin."""
-        logging.debug('Activating plugin...')
+        print('edit-file plugin: Activating')
 
         action = Gio.SimpleAction(name=EditFile._action)
         action.connect('activate', self.edit_file)
@@ -66,7 +65,7 @@ class EditFile(GObject.Object, Peas.Activatable):
 
     def do_deactivate(self):
         """Deactivate the plugin."""
-        logging.debug('Deactivating plugin...')
+        print('edit-file plugin: deactivating')
 
         for location in EditFile._locations:
             self._app.remove_plugin_menu_item(location,
