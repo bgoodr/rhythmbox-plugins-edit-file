@@ -1,6 +1,6 @@
 # Attribution
 
-A complete rewrite of
+This is a complete rewrite of
 http://www.martinvogel.de/blog/uploads/ZIP-Archive/rb-edit-file_0.2.zip
 to work under Rhythmbox 3.3, using example code found at
 https://github.com/donaghhorgan/rhythmbox-plugins-open-containing-folder
