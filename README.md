@@ -28,5 +28,7 @@ call audacity instead of opening the directory.
 
 Search and replace all references to opening folders with editing files inside the .py file.
 
+Move the README file to README.md before altering it.
 
-
+    git mv README README.md
+    
