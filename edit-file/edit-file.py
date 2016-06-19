@@ -40,9 +40,10 @@ class EditFile(GObject.Object, Peas.Activatable):
             selected = page.get_entry_view().get_selected_entries()
             if selected:
                 uri = selected[0].get_playback_uri()
-                dirpath = uri.rpartition('/')[0]
-                dirpath = '/' if not dirpath else dirpath
-                subprocess.check_call(['xdg-open', dirpath])
+                print('edit-file plugin: uri==<{}>'.format(uri))
+                abspath = uri.replace("file://","")
+                print('edit-file plugin: abspath==<{}>'.format(abspath))
+                subprocess.check_call(['audacity', abspath])
         except:
             print('edit-file plugin: Could not edit file')
 

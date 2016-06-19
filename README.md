@@ -45,3 +45,7 @@ Change the code to use print and not the logging package, as otherwise -D option
 Test it out:
 
     ./install.sh; rhythmbox -D edit-file
+
+At this point, it does exactly what the https://github.com/donaghhorgan/rhythmbox-plugins-open-containing-folder does which is open the folder.
+
+Change the edit-file.py file to execute the file with audacity.
