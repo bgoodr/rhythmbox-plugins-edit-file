@@ -1,5 +1,6 @@
 # rhythmbox-plugins-edit-file
-Rhythmbox edit file plugin
+
+See [installation instructions](edit-file/README.md).
 
 # How this plugin was created
 
