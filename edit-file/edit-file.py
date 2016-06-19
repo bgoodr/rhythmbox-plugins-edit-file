@@ -65,7 +65,7 @@ class EditFile(GObject.Object, Peas.Activatable):
 
     def do_deactivate(self):
         """Deactivate the plugin."""
-        print('edit-file plugin: deactivating')
+        print('edit-file plugin: Deactivating')
 
         for location in EditFile._locations:
             self._app.remove_plugin_menu_item(location,
