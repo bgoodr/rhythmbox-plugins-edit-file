@@ -1,0 +1,9 @@
+[RB Plugin]
+Loader=python
+Module=rb-edit-file
+IAge=1
+Name=Edit File
+Description=Edit song with Audacity
+Authors=Martin Vogel <mail@martinvogel.de>
+Copyright=Copyright © 2009, 2011 Martin Vogel
+Website=http://www.martinvogel.de/
