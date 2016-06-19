@@ -1,26 +1,12 @@
 # -*- Mode: python; coding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
 #
-#    EditFile.py
+#    edit-file.py
 #
-#    Adds an option to open the folder containing the selected track(s)
+#    Adds an option to edit the file containing the selected track
 #    to the right click context menu.
-#    Copyright (C) 2012-2016 Donagh Horgan <donagh.horgan@gmail.com>
+#    Based on code in 
 #
-#    Partly based on rb-open-folder by Adolfo González Blázquez.
-#    Copyright (C) 2007, 2008 Adolfo González Blázquez <code@infinicode.org>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Partly based on code in https://github.com/donaghhorgan/rhythmbox-plugins-open-containing-folder/blob/master/OpenContainingFolder.py
 
 from gi.repository import Gio, GObject, Gtk, Peas, RB
 import logging
@@ -29,12 +15,12 @@ import subprocess
 
 class EditFile(GObject.Object, Peas.Activatable):
 
-    """Adds an option to open the folder containing the selected track(s) to
+    """Adds an option to edit the file containing the selected track to
     the right click context menu."""
 
     object = GObject.property(type=GObject.Object)
 
-    _action = 'open-containing-folder'
+    _action = 'edit-file'
     _locations = ['browser-popup',
                   'playlist-popup',
                   'podcast-episode-popup',
@@ -44,7 +30,7 @@ class EditFile(GObject.Object, Peas.Activatable):
         super(EditFile, self).__init__()
         self._app = Gio.Application.get_default()
 
-    def open_folder(self, *args):
+    def edit_file(self, *args):
         """Open the given folder.
 
         Args:
@@ -59,18 +45,18 @@ class EditFile(GObject.Object, Peas.Activatable):
                 dirpath = '/' if not dirpath else dirpath
                 subprocess.check_call(['xdg-open', dirpath])
         except:
-            logging.exception('Could not open folder')
+            logging.exception('Could not edit file')
 
     def do_activate(self):
         """Activate the plugin."""
         logging.debug('Activating plugin...')
 
         action = Gio.SimpleAction(name=EditFile._action)
-        action.connect('activate', self.open_folder)
+        action.connect('activate', self.edit_file)
         self._app.add_action(action)
 
         item = Gio.MenuItem()
-        item.set_label('Open containing folder')
+        item.set_label('Edit file')
         item.set_detailed_action('app.%s' % EditFile._action)
 
         for location in EditFile._locations:
