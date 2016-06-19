@@ -10,7 +10,7 @@
 
 from gi.repository import Gio, GObject, Gtk, Peas, RB
 import subprocess
-
+import urllib
 
 class EditFile(GObject.Object, Peas.Activatable):
 
@@ -39,7 +39,7 @@ class EditFile(GObject.Object, Peas.Activatable):
         try:
             selected = page.get_entry_view().get_selected_entries()
             if selected:
-                uri = selected[0].get_playback_uri()
+                uri = urllib.unquote(selected[0].get_playback_uri())
                 print('edit-file plugin: uri==<{}>'.format(uri))
                 abspath = uri.replace("file://","")
                 print('edit-file plugin: abspath==<{}>'.format(abspath))
