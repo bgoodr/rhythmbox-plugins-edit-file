@@ -26,3 +26,7 @@ call audacity instead of opening the directory.
 
     curl https://raw.githubusercontent.com/donaghhorgan/rhythmbox-plugins-open-containing-folder/master/OpenContainingFolder.py > edit-file.py
 
+Search and replace OpenContainingFolder with EditFile.
+
+
+

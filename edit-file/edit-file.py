@@ -1,6 +1,6 @@
 # -*- Mode: python; coding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
 #
-#    OpenContainingFolder.py
+#    EditFile.py
 #
 #    Adds an option to open the folder containing the selected track(s)
 #    to the right click context menu.
@@ -27,7 +27,7 @@ import logging
 import subprocess
 
 
-class OpenContainingFolder(GObject.Object, Peas.Activatable):
+class EditFile(GObject.Object, Peas.Activatable):
 
     """Adds an option to open the folder containing the selected track(s) to
     the right click context menu."""
@@ -41,7 +41,7 @@ class OpenContainingFolder(GObject.Object, Peas.Activatable):
                   'queue-popup']
 
     def __init__(self):
-        super(OpenContainingFolder, self).__init__()
+        super(EditFile, self).__init__()
         self._app = Gio.Application.get_default()
 
     def open_folder(self, *args):
@@ -65,23 +65,23 @@ class OpenContainingFolder(GObject.Object, Peas.Activatable):
         """Activate the plugin."""
         logging.debug('Activating plugin...')
 
-        action = Gio.SimpleAction(name=OpenContainingFolder._action)
+        action = Gio.SimpleAction(name=EditFile._action)
         action.connect('activate', self.open_folder)
         self._app.add_action(action)
 
         item = Gio.MenuItem()
         item.set_label('Open containing folder')
-        item.set_detailed_action('app.%s' % OpenContainingFolder._action)
+        item.set_detailed_action('app.%s' % EditFile._action)
 
-        for location in OpenContainingFolder._locations:
+        for location in EditFile._locations:
             self._app.add_plugin_menu_item(location,
-                                           OpenContainingFolder._action,
+                                           EditFile._action,
                                            item)
 
     def do_deactivate(self):
         """Deactivate the plugin."""
         logging.debug('Deactivating plugin...')
 
-        for location in OpenContainingFolder._locations:
+        for location in EditFile._locations:
             self._app.remove_plugin_menu_item(location,
-                                              OpenContainingFolder._action)
+                                              EditFile._action)
