@@ -33,3 +33,9 @@ Move the README file to README.md before altering it.
     git mv README README.md
     
 Edit the edit-file/README.md to simplify instructions.
+
+Get a copy of a correctly formatted plugin file:
+
+    curl https://raw.githubusercontent.com/bgoodr/rhythmbox-plugins-sample-plugin/master/sample-python/sample-python.plugin > edit-file.plugin
+
+And update it for content.

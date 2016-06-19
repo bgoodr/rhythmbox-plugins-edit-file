@@ -1,9 +1,10 @@
-[RB Plugin]
-Loader=python
-Module=rb-edit-file
-IAge=1
+[Plugin]
+Loader=python3
+Module=edit-file
+IAge=2
+Depends=rb
 Name=Edit File
-Description=Edit song with Audacity
-Authors=Martin Vogel <mail@martinvogel.de>
-Copyright=Copyright © 2009, 2011 Martin Vogel
-Website=http://www.martinvogel.de/
+Description=Adds an option to edit the file containing the selected track to the right click context menu.
+Authors=Brent Goodrick <bgoodr@gmail.com>
+Copyright=Copyright © 2012-2016 Brent Goodrick
+Website=https://github.com/bgoodr/rhythmbox-plugins-edit-file
