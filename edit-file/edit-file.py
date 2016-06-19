@@ -44,7 +44,6 @@ class EditFile(GObject.Object, Peas.Activatable):
                 print('edit-file plugin: uri==<{}>'.format(uri))
                 abspath = uri.replace("file://","")
                 print('edit-file plugin: abspath==<{}>'.format(abspath))
-                # subprocess.check_call(['audacity', abspath])
                 subprocess.Popen(['audacity', abspath])
         except:
             print('edit-file plugin: Could not edit file')
