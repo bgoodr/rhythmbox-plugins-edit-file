@@ -13,3 +13,9 @@ Do some renaming to be compatible with what I see in other plugins:
     git mv rb-edit-file.py edit-file.py
     git mv rb-edit-file.rb-plugin edit-file.plugin
 
+Add the install.sh file:
+
+    cd edit-file
+    curl https://raw.githubusercontent.com/bgoodr/rhythmbox-plugins-sample-plugin/master/sample-python/install.sh > install.sh
+    chmod a+x install.sh
+
