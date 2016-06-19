@@ -32,3 +32,4 @@ Move the README file to README.md before altering it.
 
     git mv README README.md
     
+Edit the edit-file/README.md to simplify instructions.
