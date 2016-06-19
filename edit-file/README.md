@@ -14,7 +14,7 @@ right click context menu.
 
 The following packages are required:
 
-  * xdg-utils
+  * audacity
 
 ## Install
 
