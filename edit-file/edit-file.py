@@ -1,94 +1,87 @@
-# -*- coding: utf8 -*-
+# -*- Mode: python; coding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
 #
-# Copyright (C) 2009, 2011 Martin Vogel <mail@martinvogel.de>
-# http://www.martinvogel.de
+#    OpenContainingFolder.py
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+#    Adds an option to open the folder containing the selected track(s)
+#    to the right click context menu.
+#    Copyright (C) 2012-2016 Donagh Horgan <donagh.horgan@gmail.com>
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+#    Partly based on rb-open-folder by Adolfo González Blázquez.
+#    Copyright (C) 2007, 2008 Adolfo González Blázquez <code@infinicode.org>
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
 #
-# Thanks to http://live.gnome.org/RhythmboxPlugins/WritingGuide
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
 #
-# rb-edit-file is a modification of the plugin rb-open-folder 
-#  
-# rb-open-folder was written by
-# Adolfo González Blázquez <code@infinicode.org>
-# http://www.infinicode.org/code/rb/
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import rhythmdb, rb
-import gobject, gtk
-from subprocess import Popen
-from urllib import url2pathname
+from gi.repository import Gio, GObject, Gtk, Peas, RB
+import logging
+import subprocess
 
-ui_str = """
-<ui>
-  <popup name="BrowserSourceViewPopup">
-    <placeholder name="PluginPlaceholder">
-      <menuitem name="EditFilePopup" action="EditFile"/>
-    </placeholder>
-  </popup>
 
-  <popup name="PlaylistViewPopup">
-    <placeholder name="PluginPlaceholder">
-      <menuitem name="EditFilePopup" action="EditFile"/>
-    </placeholder>
-  </popup>
+class OpenContainingFolder(GObject.Object, Peas.Activatable):
 
-  <popup name="QueuePlaylistViewPopup">
-    <placeholder name="PluginPlaceholder">
-      <menuitem name="EditFilePopup" action="EditFile"/>
-    </placeholder>
-  </popup>
+    """Adds an option to open the folder containing the selected track(s) to
+    the right click context menu."""
 
-  <popup name="PodcastViewPopup">
-    <placeholder name="PluginPlaceholder">
-      <menuitem name="EditFilePopup" action="EditFile"/>
-    </placeholder>
-  </popup>
-</ui>
-"""
+    object = GObject.property(type=GObject.Object)
 
-class EditFile(rb.Plugin):
+    _action = 'open-containing-folder'
+    _locations = ['browser-popup',
+                  'playlist-popup',
+                  'podcast-episode-popup',
+                  'queue-popup']
 
-	def __init__(self):
-		rb.Plugin.__init__(self)
-			
-	def activate(self, shell):
-		self.action = gtk.Action('EditFile', _('Edit file'),
-					 _('Edit this song with Audacity'),
-					 'rb-edit-file')
-		self.activate_id = self.action.connect('activate', self.edit_file, shell)
-		
-		self.action_group = gtk.ActionGroup('EditFilePluginActions')
-		self.action_group.add_action(self.action)
-		
-		uim = shell.get_ui_manager ()
-		uim.insert_action_group(self.action_group, 0)
-		self.ui_id = uim.add_ui_from_string(ui_str)
-		uim.ensure_update()
-	
-	def edit_file(self, action, shell):
-		source = shell.get_property("selected_page")
-		entry = rb.Source.get_entry_view(source)
-		selected = entry.get_selected_entries()
-		if selected != []:
-			Datei = url2pathname(selected[0].get_playback_uri().replace("file://", ""))
-			Popen(["audacity", Datei])
-	
-	def deactivate(self, shell):
-		uim = shell.get_ui_manager()
-		uim.remove_ui (self.ui_id)
-		uim.remove_action_group (self.action_group)
+    def __init__(self):
+        super(OpenContainingFolder, self).__init__()
+        self._app = Gio.Application.get_default()
 
-		self.action_group = None
-		self.action = None
+    def open_folder(self, *args):
+        """Open the given folder.
+
+        Args:
+            args: Additional arguments. These are ignored.
+        """
+        page = self.object.props.selected_page
+        try:
+            selected = page.get_entry_view().get_selected_entries()
+            if selected:
+                uri = selected[0].get_playback_uri()
+                dirpath = uri.rpartition('/')[0]
+                dirpath = '/' if not dirpath else dirpath
+                subprocess.check_call(['xdg-open', dirpath])
+        except:
+            logging.exception('Could not open folder')
+
+    def do_activate(self):
+        """Activate the plugin."""
+        logging.debug('Activating plugin...')
+
+        action = Gio.SimpleAction(name=OpenContainingFolder._action)
+        action.connect('activate', self.open_folder)
+        self._app.add_action(action)
+
+        item = Gio.MenuItem()
+        item.set_label('Open containing folder')
+        item.set_detailed_action('app.%s' % OpenContainingFolder._action)
+
+        for location in OpenContainingFolder._locations:
+            self._app.add_plugin_menu_item(location,
+                                           OpenContainingFolder._action,
+                                           item)
+
+    def do_deactivate(self):
+        """Deactivate the plugin."""
+        logging.debug('Deactivating plugin...')
+
+        for location in OpenContainingFolder._locations:
+            self._app.remove_plugin_menu_item(location,
+                                              OpenContainingFolder._action)

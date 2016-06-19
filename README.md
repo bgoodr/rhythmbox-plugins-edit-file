@@ -19,3 +19,10 @@ Add the install.sh file:
     curl https://raw.githubusercontent.com/bgoodr/rhythmbox-plugins-sample-plugin/master/sample-python/install.sh > install.sh
     chmod a+x install.sh
 
+The edit-file.py looks like it is completely busted and not working at
+all in Rhythmbox 3.3, so replace it with the code in
+donaghhorgan/rhythmbox-plugins-open-containing-folder and change it to
+call audacity instead of opening the directory. 
+
+    curl https://raw.githubusercontent.com/donaghhorgan/rhythmbox-plugins-open-containing-folder/master/OpenContainingFolder.py > edit-file.py
+
