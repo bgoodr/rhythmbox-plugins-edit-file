@@ -7,4 +7,4 @@ Download rb-edit-file_0.2.zip from http://www.martinvogel.de/blog/index.php?/arc
 
 Extract it and check in the original source. zip file is http://www.martinvogel.de/blog/uploads/ZIP-Archive/rb-edit-file_0.2.zip
 
-
+git mv rb-edit-file edit-file
